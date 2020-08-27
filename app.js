@@ -13,19 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function control (e) {
     gameGrid.childNodes[currentIndex].classList.remove('snake');
-
+    // direction only in 3 ways (no 180 turn)
     switch (e.keyCode) {
       case Keys.right:
-        direction = 1;
+        if (lastDirection !== -1) { direction = 1; }
         break;
       case Keys.up:
-        direction = -width;
+        if (lastDirection !== width) { direction = -width; }
         break;
       case Keys.left:
-        direction = -1;
+        if (lastDirection !== 1) { direction = -1; }
         break;
       case Keys.down:
-        direction = width;
+        if (lastDirection !== -width) { direction = width; }
         break;
     }
   }
@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     score = 0;
     randomApple();
     direction = 1;
+    lastDirection = 1;
     scoreDisplay.innerText = score;
     intervalTime = 1000;
     currentSnake = [2, 1, 0];
@@ -67,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tail = currentSnake.pop();
     gameGrid.childNodes[tail].classList.remove('snake');
     currentSnake.unshift(currentSnake[0] + direction);
+    lastDirection = direction;
 
     // hit apple
     if (gameGrid.childNodes[currentSnake[0]].classList.contains('apple')) {
@@ -93,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let appleIndex = 0;
   let currentSnake = [2, 1, 0];
   let direction = 1;
+  let lastDirection = 1;
   let score = 0;
   let speed = 0.9;
   let intervalTime = 0;
